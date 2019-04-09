@@ -1,5 +1,5 @@
 import React from 'react';
-import ListItems from './list-items'
+import ListItems from '../list-items/list-items'
 
 const List = ({ localData }) => {
 
