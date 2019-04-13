@@ -11,25 +11,54 @@ export default class ListItems extends Component {
   //   };
   // }
 
+  state =  {
+    done: false,
+    important: false,
+  };
+
   onLabelClick = () => {
-      alert(`Done: ${this.props.label}`)
+    this.setState(({done}) => {
+      return {
+        done: !done
+      }
+    })
+  };
+
+  onMarkImportant = () => {
+    this.setState((state) => {
+      return {
+        important: !state.important
+      }
+    })
   };
 
   render() {
-    const { label, important = false } = this.props;
+    const { label, onDeleted } = this.props;
+    const { done, important } = this.state;
 
-    const style = {
-      color: important ? 'blue' : 'black',
-      fontWeight: important ? 'bold' : 'normal'
-    };
+    let stickerClass = 'sticker-list';
+    if (done) {
+        stickerClass += ' sticker-list-done';
+    }
+
+    if (important) {
+        stickerClass += ' sticker-important'
+    }
+
+    // const style = {
+    //   color: important ? 'blue' : 'black',
+    //   fontWeight: important ? 'bold' : 'normal'
+    // };
 
     return (
-      <span className='' style={ style } onClick={ this.onLabelClick }>
+      <span>
+        <span className={ stickerClass } onClick={ this.onLabelClick }>
         { label }
-        <button type='button' className=''>
+        </span>
+        <button type='button' className='' onClick={ this.onMarkImportant }>
           <i className='' />
         </button>
-        <button type='button' className=''>
+        <button type='button' className='' onClick={ onDeleted }>
           <i className='' />
         </button>
       </span>

@@ -17,8 +17,11 @@ const App = () => {
     return (
         <div className='content'>
             <Header/>
-            <Search/>
-            <List localData={localStorage}/>
+            <div>
+                <Search/>
+
+            </div>
+            <List localData={localStorage} onDeleted={(id) => console.log('del', id)}/>
         </div>
     )
 };

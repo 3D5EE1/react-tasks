@@ -1,7 +1,7 @@
 import React from 'react';
 import ListItems from '../list-items/list-items'
 
-const List = ({ localData }) => {
+const List = ({ localData, onDeleted }) => {
 
     const data = localData.map((element) => {
 
@@ -9,7 +9,7 @@ const List = ({ localData }) => {
 
         return (
             <li key={id}>
-                <ListItems { ...elementProps }/>
+                <ListItems { ...elementProps } onDeleted={() => onDeleted(id)}/>
             </li>
         )
     });
