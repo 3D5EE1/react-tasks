@@ -3,23 +3,24 @@ import './list-items.css'
 
 export default class ListItems extends Component {
 
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.onLabelClick = () => {
-  //     alert(`Done: ${this.props.label}`)
-  //   };
-  // }
-
   state =  {
     done: false,
     important: false,
+    text: false
+  };
+
+  openText = () => {
+    this.setState((state) => {
+        return {
+            text: !state.text,
+        }
+    })
   };
 
   onLabelClick = () => {
     this.setState(({done}) => {
       return {
-        done: !done
+        done: !done,
       }
     })
   };
@@ -27,14 +28,19 @@ export default class ListItems extends Component {
   onMarkImportant = () => {
     this.setState((state) => {
       return {
-        important: !state.important
+        important: !state.important,
       }
     })
   };
 
   render() {
     const { label, onDeleted } = this.props;
-    const { done, important } = this.state;
+    const { done, important, text } = this.state;
+
+    let openText = 'sticker-label-text';
+    if (text) {
+        openText += ' text-open';
+    }
 
     let stickerClass = 'sticker-list';
     if (done) {
@@ -45,22 +51,21 @@ export default class ListItems extends Component {
         stickerClass += ' sticker-important'
     }
 
-    // const style = {
-    //   color: important ? 'blue' : 'black',
-    //   fontWeight: important ? 'bold' : 'normal'
-    // };
-
     return (
       <span>
-        <span className={ stickerClass } onClick={ this.onLabelClick }>
-        { label }
-        </span>
-        <button type='button' className='' onClick={ this.onMarkImportant }>
-          <i className='' />
-        </button>
-        <button type='button' className='' onClick={ onDeleted }>
-          <i className='' />
-        </button>
+        <span className={ stickerClass } onClick={ this.onLabelClick }>{ label }</span>
+        <div className='sticker-button-panel'>
+          <button type='button' className='open-label' onClick={ this.openText}>
+            <i className='' />
+          </button>
+          <button type='button' className='important' onClick={ this.onMarkImportant }>
+            <i className='fa fa-exclamation' />
+          </button>
+          <button type='button' className='deleted' onClick={ onDeleted }>
+            <i className='fa fa-trash-o' />
+          </button>
+        </div>
+        <textarea className={ openText } placeholder="информация..."/>
       </span>
     )
   };

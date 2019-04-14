@@ -1,27 +1,30 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ListItems from '../list-items/list-items'
+import ListAddItem from '../list-add-item/list-add-item'
 
-const List = ({ localData, onDeleted }) => {
+
+export default class List extends Component {
+
+  render() {
+    const { localData, onDeleted } = this.props;
 
     const data = localData.map((element) => {
+      const { id, ...elementProps } = element;
 
-        const { id, ...elementProps } = element;
-
-        return (
-            <li key={id}>
-                <ListItems { ...elementProps } onDeleted={() => onDeleted(id)}/>
-            </li>
-        )
+      return (
+        <li key={id}>
+          <ListItems { ...elementProps } onDeleted={() => onDeleted(id)}/>
+        </li>
+      )
     });
 
     return (
-        <div className="sticker">
-            <ul>
-                { data }
-            </ul>
-        </div>
+      <div className="sticker">
+        <ul>
+          { data }
+        </ul>
+        < ListAddItem />
+      </div>
     )
-};
-
-
-export default List;
+  }
+}

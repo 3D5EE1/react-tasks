@@ -1,31 +1,42 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import './app.css'
 
-import Header from '../app-header'
-import Search from '../search-panel'
+import Header from '../sticker-header'
+import Search from '../sticker-search-panel'
 import List from '../list'
 
-const App = () => {
+export default class App extends Component {
 
-    const localStorage = [
-        {id: 1, label: "Drink Coffee", important: false},
-        {id: 2, label: "Drink Tee", important: true},
-        {id: 3, label: "Drink Bear", important: false},
-    ];
+  state = {
+    localStorage: [
+      {id: 1, label: "Drink Coffee", important: false},
+      {id: 2, label: "Drink Tee", important: true},
+      {id: 3, label: "Drink Bear", important: false},
+    ]
+  };
+
+  deleteItems = (id) => {
+    this.setState(({ localStorage })=> {
+      const index = localStorage.findIndex((el) => el.id === id);
+      const newArrow = [ ...localStorage.slice(0, index), ...localStorage.slice(index + 1)];
+
+      return {localStorage: newArrow};
+    })
+  };
+
+  render () {
+
+    const {localStorage} = this.state;
 
     return (
-        <div className='content'>
-            <Header/>
-            <div>
-                <Search/>
-
-            </div>
-            <List localData={localStorage} onDeleted={(id) => console.log('del', id)}/>
+      <div className='content'>
+        <Header/>
+        <div>
+          <Search/>
         </div>
+
+        <List localData={localStorage} onDeleted={ this.deleteItems }/>
+      </div>
     )
+  }
 };
-
-ReactDOM.render(<App/>, document.getElementById('root'));
-
-export default App;
