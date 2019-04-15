@@ -4,8 +4,6 @@ import './list-items.css'
 export default class ListItems extends Component {
 
   state =  {
-    done: false,
-    important: false,
     text: false
   };
 
@@ -17,25 +15,9 @@ export default class ListItems extends Component {
     })
   };
 
-  onLabelClick = () => {
-    this.setState(({done}) => {
-      return {
-        done: !done,
-      }
-    })
-  };
-
-  onMarkImportant = () => {
-    this.setState((state) => {
-      return {
-        important: !state.important,
-      }
-    })
-  };
-
   render() {
-    const { label, onDeleted } = this.props;
-    const { done, important, text } = this.state;
+    const { label, onDeleted, onToggleImportant, onToggleDone, done, important,  } = this.props;
+    const { text } = this.state;
 
     let openText = 'sticker-label-text';
     if (text) {
@@ -53,12 +35,12 @@ export default class ListItems extends Component {
 
     return (
       <span>
-        <span className={ stickerClass } onClick={ this.onLabelClick }>{ label }</span>
+        <span className={ stickerClass } onClick={ onToggleDone  }>{ label }</span>
         <div className='sticker-button-panel'>
           <button type='button' className='open-label' onClick={ this.openText}>
             <i className='' />
           </button>
-          <button type='button' className='important' onClick={ this.onMarkImportant }>
+          <button type='button' className='important' onClick={ onToggleImportant }>
             <i className='fa fa-exclamation' />
           </button>
           <button type='button' className='deleted' onClick={ onDeleted }>
