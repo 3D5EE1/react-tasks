@@ -5,6 +5,7 @@ import Header from '../sticker-header'
 import Search from '../sticker-search-panel'
 import List from '../list'
 import ListAddItem from "../list-add-item";
+import ItemsStatus from "../list-items-status"
 
 export default class App extends Component {
 
@@ -16,7 +17,8 @@ export default class App extends Component {
       this.createItems("Drink Tee"),
       this.createItems("Drink Beer"),
     ],
-    term: ''
+    term: '',
+    filter: 'all'
   };
 
   createItems(label) {
@@ -91,11 +93,28 @@ export default class App extends Component {
     this.setState({term});
   };
 
+  onFilterChange = (filter) => {
+    this.setState({filter});
+  };
+
+  filter = (items, filter) => {
+      switch (filter) {
+          case 'all':
+              return items;
+          case 'active':
+              return items.filter((item) => !item.done);
+          case 'done':
+              return items.filter((item) => item.done);
+          default:
+              return items;
+      }
+  };
+
   render () {
 
-    const {localStorage, term} = this.state;
+    const {localStorage, term, filter} = this.state;
 
-    const visibleItems = this.search(localStorage, term);
+    const visibleItems = this.filter(this.search(localStorage, term), filter);
 
     const doneCount = localStorage.filter((el) => el.done).length;
 
@@ -104,6 +123,7 @@ export default class App extends Component {
     return (
       <div className='content'>
         <Header toDo={todoCount} done={doneCount}/>
+        <ItemsStatus filter={filter} onFilterChange={this.onFilterChange}/>
         <div>
           <Search onSearchChange={this.onSearchChange}/>
         </div>
